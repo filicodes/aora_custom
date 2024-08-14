@@ -1,10 +1,14 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import { Slot, Stack } from "expo-router";
+import React, { useEffect } from "react";
+import { Slot, SplashScreen, Stack } from "expo-router";
 
 import { useFonts } from "expo-font";
 
+//prevent auto hiding splash screen before asset loading is complete
+SplashScreen.preventAutoHideAsync();
+
 const RootLayout = () => {
+  //loading fonts
   const [fontsLoaded, error] = useFonts({
     "Poppins-Black": require("../assets/fonts/Poppins-Black.ttf"),
     "Poppins-Bold": require("../assets/fonts/Poppins-Bold.ttf"),
@@ -16,6 +20,16 @@ const RootLayout = () => {
     "Poppins-SemiBold": require("../assets/fonts/Poppins-SemiBold.ttf"),
     "Poppins-Thin": require("../assets/fonts/Poppins-Thin.ttf"),
   });
+
+  //try to load the fonts when the screen is loading
+  useEffect(() => {
+    if (error) throw error;
+
+    if (fontsLoaded) SplashScreen.hideAsync();
+  }, [fontsLoaded, error]);
+
+  //if the fonts are not loaded do not throw an error screen
+  if (!fontsLoaded && !error) return null;
 
   return (
     <Stack>
