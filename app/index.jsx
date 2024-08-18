@@ -6,6 +6,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { images } from "../constants";
 import CustomButton from "../components/CustomButton";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
+import { Account, Client } from "react-native-appwrite";
+import { useEffect } from "react";
+import { directToHome } from "../lib/appwrite";
 
 export default function App() {
   return (
